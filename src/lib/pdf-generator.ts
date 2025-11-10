@@ -128,7 +128,7 @@ export class PDFGenerator {
     // Description
     this.pdf.setFontSize(11)
     this.pdf.setFont('helvetica', 'normal')
-    const description = this.wrapText(result.description, 170)
+    const description = this.wrapText(result.description || 'Análise não disponível', 170)
     description.forEach(line => {
       this.pdf.text(line, this.margin, this.currentY)
       this.currentY += 5
@@ -505,6 +505,11 @@ export class PDFGenerator {
   }
 
   private wrapText(text: string, maxWidth: number): string[] {
+    // Verificar se text é válido antes de usar split
+    if (!text || typeof text !== 'string') {
+      return ['']
+    }
+    
     const words = text.split(' ')
     const lines: string[] = []
     let currentLine = ''
