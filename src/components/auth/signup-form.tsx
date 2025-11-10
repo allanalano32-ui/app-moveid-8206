@@ -129,7 +129,167 @@ export function SignupForm({ onSuccess }: SignupFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className=\"space-y-4\">
-      <div className=\"grid grid-cols-2 gap-4\">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
         <div>
-          <Label htmlFor=\"firstName\">Nome</Label>\n          <div className=\"relative\">\n            <User className=\"absolute left-3 top-3 h-4 w-4 text-gray-400\" />\n            <Input\n              id=\"firstName\"\n              name=\"firstName\"\n              type=\"text\"\n              placeholder=\"Seu nome\"\n              className=\"pl-10\"\n              value={formData.firstName}\n              onChange={handleInputChange}\n              disabled={isLoading}\n              required\n            />\n          </div>\n        </div>\n        <div>\n          <Label htmlFor=\"lastName\">Sobrenome</Label>\n          <div className=\"relative\">\n            <User className=\"absolute left-3 top-3 h-4 w-4 text-gray-400\" />\n            <Input\n              id=\"lastName\"\n              name=\"lastName\"\n              type=\"text\"\n              placeholder=\"Seu sobrenome\"\n              className=\"pl-10\"\n              value={formData.lastName}\n              onChange={handleInputChange}\n              disabled={isLoading}\n              required\n            />\n          </div>\n        </div>\n      </div>\n\n      <div>\n        <Label htmlFor=\"email\">E-mail</Label>\n        <div className=\"relative\">\n          <Mail className=\"absolute left-3 top-3 h-4 w-4 text-gray-400\" />\n          <Input\n            id=\"email\"\n            name=\"email\"\n            type=\"email\"\n            placeholder=\"seu@email.com\"\n            className=\"pl-10\"\n            value={formData.email}\n            onChange={handleInputChange}\n            disabled={isLoading}\n            required\n          />\n        </div>\n      </div>\n\n      <div>\n        <Label htmlFor=\"phone\">Telefone (opcional)</Label>\n        <div className=\"relative\">\n          <Phone className=\"absolute left-3 top-3 h-4 w-4 text-gray-400\" />\n          <Input\n            id=\"phone\"\n            name=\"phone\"\n            type=\"tel\"\n            placeholder=\"(11) 99999-9999\"\n            className=\"pl-10\"\n            value={formData.phone}\n            onChange={handleInputChange}\n            disabled={isLoading}\n          />\n        </div>\n      </div>\n\n      <div>\n        <Label htmlFor=\"password\">Senha</Label>\n        <div className=\"relative\">\n          <Lock className=\"absolute left-3 top-3 h-4 w-4 text-gray-400\" />\n          <Input\n            id=\"password\"\n            name=\"password\"\n            type={showPassword ? 'text' : 'password'}\n            placeholder=\"••••••••\"\n            className=\"pl-10 pr-10\"\n            value={formData.password}\n            onChange={handleInputChange}\n            disabled={isLoading}\n            required\n          />\n          <button\n            type=\"button\"\n            className=\"absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer\"\n            onClick={() => setShowPassword(!showPassword)}\n          >\n            {showPassword ? <EyeOff /> : <Eye />}\n          </button>\n        </div>\n      </div>\n\n      <div>\n        <Label htmlFor=\"confirmPassword\">Confirmar Senha</Label>\n        <div className=\"relative\">\n          <Lock className=\"absolute left-3 top-3 h-4 w-4 text-gray-400\" />\n          <Input\n            id=\"confirmPassword\"\n            name=\"confirmPassword\"\n            type={showConfirmPassword ? 'text' : 'password'}\n            placeholder=\"••••••••\"\n            className=\"pl-10 pr-10\"\n            value={formData.confirmPassword}\n            onChange={handleInputChange}\n            disabled={isLoading}\n            required\n          />\n          <button\n            type=\"button\"\n            className=\"absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer\"\n            onClick={() => setShowConfirmPassword(!showConfirmPassword)}\n          >\n            {showConfirmPassword ? <EyeOff /> : <Eye />}\n          </button>\n        </div>\n      </div>\n\n      <div className=\"flex items-center space-x-2\">\n        <input \n          type=\"checkbox\" \n          id=\"terms\" \n          className=\"rounded\" \n          checked={acceptedTerms}\n          onChange={(e) => setAcceptedTerms(e.target.checked)}\n          disabled={isLoading}\n        />\n        <label htmlFor=\"terms\" className=\"text-sm\">\n          Aceito os{' '}\n          <Link href=\"/termos\" className=\"text-blue-600 hover:underline\">\n            Termos de Uso\n          </Link>{' '}\n          e{' '}\n          <Link href=\"/privacidade\" className=\"text-blue-600 hover:underline\">\n            Política de Privacidade\n          </Link>\n        </label>\n      </div>\n\n      <Button \n        type=\"submit\" \n        className=\"w-full bg-blue-600 hover:bg-blue-700\" \n        disabled={isLoading}\n      >\n        {isLoading ? (\n          <>\n            <Loader2 className=\"mr-2 h-4 w-4 animate-spin\" />\n            Criando conta...\n          </>\n        ) : (\n          <>\n            <UserPlus className=\"mr-2 h-4 w-4\" />\n            Criar Conta\n          </>\n        )}\n      </Button>\n    </form>\n  )\n}"
+          <Label htmlFor="firstName">Nome</Label>
+          <div className="relative">
+            <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input
+              id="firstName"
+              name="firstName"
+              type="text"
+              placeholder="Seu nome"
+              className="pl-10"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <Label htmlFor="lastName">Sobrenome</Label>
+          <div className="relative">
+            <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input
+              id="lastName"
+              name="lastName"
+              type="text"
+              placeholder="Seu sobrenome"
+              className="pl-10"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              disabled={isLoading}
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="email">E-mail</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="seu@email.com"
+            className="pl-10"
+            value={formData.email}
+            onChange={handleInputChange}
+            disabled={isLoading}
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="phone">Telefone (opcional)</Label>
+        <div className="relative">
+          <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="(11) 99999-9999"
+            className="pl-10"
+            value={formData.phone}
+            onChange={handleInputChange}
+            disabled={isLoading}
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="password">Senha</Label>
+        <div className="relative">
+          <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Input
+            id="password"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="••••••••"
+            className="pl-10 pr-10"
+            value={formData.password}
+            onChange={handleInputChange}
+            disabled={isLoading}
+            required
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <EyeOff /> : <Eye />}
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+        <div className="relative">
+          <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            type={showConfirmPassword ? 'text' : 'password'}
+            placeholder="••••••••"
+            className="pl-10 pr-10"
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            disabled={isLoading}
+            required
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? <EyeOff /> : <Eye />}
+          </button>
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <input 
+          type="checkbox" 
+          id="terms" 
+          className="rounded" 
+          checked={acceptedTerms}
+          onChange={(e) => setAcceptedTerms(e.target.checked)}
+          disabled={isLoading}
+        />
+        <label htmlFor="terms" className="text-sm">
+          Aceito os{' '}
+          <Link href="/termos" className="text-blue-600 hover:underline">
+            Termos de Uso
+          </Link>{' '}
+          e{' '}
+          <Link href="/privacidade" className="text-blue-600 hover:underline">
+            Política de Privacidade
+          </Link>
+        </label>
+      </div>
+
+      <Button 
+        type="submit" 
+        className="w-full bg-blue-600 hover:bg-blue-700" 
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Criando conta...
+          </>
+        ) : (
+          <>
+            <UserPlus className="mr-2 h-4 w-4" />
+            Criar Conta
+          </>
+        )}
+      </Button>
+    </form>
+  )
+}
