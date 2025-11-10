@@ -16,28 +16,28 @@ export default function Home() {
           <span className="text-xl font-bold text-gray-900">MoveID</span>
         </div>
         <nav className="hidden md:flex space-x-6">
-          <Link href="/como-funciona" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
+          <Link href="/como-funciona" className="text-gray-600 hover:text-blue-600 transition-colors">
             Como Funciona
           </Link>
-          <Link href="/relatorios" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
+          <Link href="/relatorios" className="text-gray-600 hover:text-blue-600 transition-colors">
             Relatórios
           </Link>
-          <Link href="/planos" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
+          <Link href="/planos" className="text-gray-600 hover:text-blue-600 transition-colors">
             Planos
           </Link>
-          <Link href="/faq" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
+          <Link href="/faq" className="text-gray-600 hover:text-blue-600 transition-colors">
             FAQ
           </Link>
-          <Link href="/contato" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
+          <Link href="/contato" className="text-gray-600 hover:text-blue-600 transition-colors">
             Contato
           </Link>
         </nav>
         <div className="flex space-x-2">
           <Button variant="outline" asChild>
-            <Link href="/login" prefetch={false}>Entrar</Link>
+            <Link href="/login">Entrar</Link>
           </Button>
           <Button asChild>
-            <Link href="/planos" prefetch={false}>Assinar Premium</Link>
+            <Link href="/planos">Assinar Premium</Link>
           </Button>
         </div>
       </header>
@@ -56,13 +56,13 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
-            <Link href="/analise" prefetch={false}>
+            <Link href="/analise">
               <Smartphone className="mr-2 h-5 w-5" />
               Começar Análise
             </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link href="/relatorios" prefetch={false}>
+            <Link href="/relatorios">
               <FileText className="mr-2 h-5 w-5" />
               Ver Relatório Demo
             </Link>
@@ -203,7 +203,7 @@ export default function Home() {
 
         <div className="text-center">
           <Button size="lg" variant="outline" asChild>
-            <Link href="/relatorios" prefetch={false}>
+            <Link href="/relatorios">
               <FileText className="mr-2 h-5 w-5" />
               Ver Exemplo de Relatório
             </Link>
@@ -220,7 +220,7 @@ export default function Home() {
           Comece gratuitamente e evolua com o plano premium.
         </p>
         <Button size="lg" className="bg-green-600 hover:bg-green-700" asChild>
-          <Link href="/planos" prefetch={false}>
+          <Link href="/planos">
             Ver Planos
           </Link>
         </Button>
@@ -244,25 +244,25 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Produto</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/como-funciona" className="hover:text-white" prefetch={false}>Como Funciona</Link></li>
-                <li><Link href="/relatorios" className="hover:text-white" prefetch={false}>Relatórios</Link></li>
-                <li><Link href="/planos" className="hover:text-white" prefetch={false}>Planos</Link></li>
-                <li><Link href="/analise" className="hover:text-white" prefetch={false}>Análise</Link></li>
+                <li><Link href="/como-funciona" className="hover:text-white">Como Funciona</Link></li>
+                <li><Link href="/relatorios" className="hover:text-white">Relatórios</Link></li>
+                <li><Link href="/planos" className="hover:text-white">Planos</Link></li>
+                <li><Link href="/analise" className="hover:text-white">Análise</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Suporte</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/faq" className="hover:text-white" prefetch={false}>FAQ</Link></li>
-                <li><Link href="/contato" className="hover:text-white" prefetch={false}>Contato</Link></li>
-                <li><Link href="/privacidade" className="hover:text-white" prefetch={false}>Privacidade</Link></li>
+                <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
+                <li><Link href="/contato" className="hover:text-white">Contato</Link></li>
+                <li><Link href="/privacidade" className="hover:text-white">Privacidade</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Empresa</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/sobre" className="hover:text-white" prefetch={false}>Sobre Nós</Link></li>
-                <li><Link href="/termos" className="hover:text-white" prefetch={false}>Termos de Uso</Link></li>
+                <li><Link href="/sobre" className="hover:text-white">Sobre Nós</Link></li>
+                <li><Link href="/termos" className="hover:text-white">Termos de Uso</Link></li>
               </ul>
             </div>
           </div>
