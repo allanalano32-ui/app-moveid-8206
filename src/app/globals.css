@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0 0);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0 0);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0 0);
+  --color-primary: oklch(0.205 0 0);
+  --color-primary-foreground: oklch(0.985 0 0);
+  --color-secondary: oklch(0.97 0 0);
+  --color-secondary-foreground: oklch(0.205 0 0);
+  --color-muted: oklch(0.97 0 0);
+  --color-muted-foreground: oklch(0.556 0 0);
+  --color-accent: oklch(0.97 0 0);
+  --color-accent-foreground: oklch(0.205 0 0);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-border: oklch(0.922 0 0);
+  --color-input: oklch(0.922 0 0);
+  --color-ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  * {
+    border-color: theme(colors.border);
+  }
+  
+  body {
+    background-color: theme(colors.background);
+    color: theme(colors.foreground);
+    font-family: theme(fontFamily.sans);
+  }
+  
+  /* Garantir que gradientes funcionem */
+  .bg-gradient-to-br {
+    background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  }
+  
+  .from-blue-50 {
+    --tw-gradient-from: #eff6ff var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+  
+  .to-green-50 {
+    --tw-gradient-to: #f0fdf4 var(--tw-gradient-to-position);
+  }
+  
+  /* Cores específicas para o app */
+  .bg-blue-600 {
+    background-color: #2563eb;
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .bg-green-600 {
+    background-color: #16a34a;
+  }
+  
+  .hover\:bg-green-700:hover {
+    background-color: #15803d;
+  }
+  
+  .text-blue-600 {
+    color: #2563eb;
+  }
+  
+  .text-green-600 {
+    color: #16a34a;
+  }
+  
+  .text-purple-600 {
+    color: #9333ea;
+  }
+  
+  .text-orange-600 {
+    color: #ea580c;
+  }
+  
+  .text-gray-900 {
+    color: #111827;
+  }
+  
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  
+  .text-gray-400 {
+    color: #9ca3af;
+  }
+  
+  .bg-white {
+    background-color: #ffffff;
+  }
+  
+  .bg-gray-900 {
+    background-color: #111827;
+  }
+  
+  .bg-gray-800 {
+    background-color: #1f2937;
+  }
+  
+  .border-gray-800 {
+    border-color: #1f2937;
+  }
+  
+  .text-white {
+    color: #ffffff;
+  }
+}
