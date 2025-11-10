@@ -1,11 +1,9 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { UserPlus, Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react'
+import { SignupForm } from '@/components/auth/signup-form'
 
 export default function Cadastro() {
   return (
@@ -26,107 +24,7 @@ export default function Cadastro() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">Nome</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="firstName"
-                      type="text"
-                      placeholder="Seu nome"
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Sobrenome</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="lastName"
-                      type="text"
-                      placeholder="Seu sobrenome"
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="email">E-mail</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="phone">Telefone (opcional)</Label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="(11) 99999-9999"
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="password">Senha</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    className="pl-10 pr-10"
-                  />
-                  <EyeOff className="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer" />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    className="pl-10 pr-10"
-                  />
-                  <EyeOff className="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer" />
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="terms" className="rounded" />
-                <label htmlFor="terms" className="text-sm">
-                  Aceito os{' '}
-                  <Link href="/termos" className="text-blue-600 hover:underline">
-                    Termos de Uso
-                  </Link>{' '}
-                  e{' '}
-                  <Link href="/privacidade" className="text-blue-600 hover:underline">
-                    Política de Privacidade
-                  </Link>
-                </label>
-              </div>
-
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                <UserPlus className="mr-2 h-4 w-4" />
-                Criar Conta
-              </Button>
-            </form>
+            <SignupForm />
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">

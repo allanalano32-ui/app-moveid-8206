@@ -236,6 +236,8 @@ export default function Analise() {
                           <SelectItem value="deadlift">Levantamento Terra</SelectItem>
                           <SelectItem value="supino">Supino</SelectItem>
                           <SelectItem value="flexao">Flexão de Braço</SelectItem>
+                          <SelectItem value="caminhada">Caminhada</SelectItem>
+                          <SelectItem value="marcha">Análise de Marcha</SelectItem>
                           <SelectItem value="corrida">Corrida</SelectItem>
                           <SelectItem value="salto">Salto</SelectItem>
                           <SelectItem value="outro">Outro</SelectItem>
