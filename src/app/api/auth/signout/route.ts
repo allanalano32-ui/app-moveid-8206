@@ -1,16 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
+
+// Verificar variáveis de ambiente
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export async function POST(request: NextRequest) {
   try {
-    // Fazer logout no Supabase Auth
+    // Verificar se as variáveis de ambiente estão configuradas
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error('Variáveis de ambiente do Supabase não configuradas')
+      return NextResponse.json(
+        { error: 'Configuração do servidor incompleta. Verifique as variáveis de ambiente.' },
+        { status: 500 }
+      )
+    }
+
+    // Criar cliente Supabase
+    const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+    // Fazer logout no Supabase
     const { error } = await supabase.auth.signOut()
 
     if (error) {
       console.error('Erro no logout:', error)
       return NextResponse.json(
         { error: 'Erro ao fazer logout' },
-        { status: 400 }
+        { status: 500 }
       )
     }
 
