@@ -14,102 +14,36 @@ export const isSupabaseConfigured = () => {
   return !!(supabaseUrl && supabaseAnonKey)
 }
 
-// Tipos para as tabelas
-export interface User {
-  id: string
-  email: string
-  full_name?: string
-  avatar_url?: string
-  phone?: string
-  date_of_birth?: string
-  created_at: string
-  updated_at: string
+// Funções para criar registros
+export const createHealthExam = async (examData: Omit<HealthExam, 'id' | 'created_at' | 'updated_at'>) => {
+  if (!supabase) throw new Error('Supabase não configurado')
+  const { data, error } = await supabase
+    .from('health_exams')
+    .insert(examData)
+    .select()
+    .single()
+  if (error) throw error
+  return data
 }
 
-export interface PersonalData {
-  id: string
-  user_id: string
-  document_type: 'cpf' | 'rg' | 'passport'
-  document_number: string
-  address?: {
-    street: string
-    city: string
-    state: string
-    zip_code: string
-    country: string
-  }
-  emergency_contact?: {
-    name: string
-    phone: string
-    relationship: string
-  }
-  medical_info?: {
-    allergies: string[]
-    medications: string[]
-    conditions: string[]
-  }
-  created_at: string
-  updated_at: string
+export const createAppointment = async (appointmentData: Omit<Appointment, 'id' | 'created_at'>) => {
+  if (!supabase) throw new Error('Supabase não configurado')
+  const { data, error } = await supabase
+    .from('appointments')
+    .insert(appointmentData)
+    .select()
+    .single()
+  if (error) throw error
+  return data
 }
 
-export interface Subscription {
-  id: string
-  user_id: string
-  stripe_customer_id?: string
-  stripe_subscription_id?: string
-  plan_type: 'basic' | 'premium' | 'pro'
-  status: 'active' | 'canceled' | 'past_due'
-  current_period_start?: string
-  current_period_end?: string
-  created_at: string
-  updated_at: string
-}
-
-export interface ImageAnalysis {
-  id: string
-  user_id: string
-  image_url: string
-  analysis_result?: any
-  analysis_type?: 'movement' | 'posture' | 'biomechanics'
-  confidence_score?: number
-  created_at: string
-}
-
-export interface HealthExam {
-  id: string
-  user_id: string
-  exam_type: string
-  exam_date: string
-  doctor_name: string
-  clinic_name: string
-  results: any
-  notes: string
-  status: string
-  created_at: string
-  updated_at: string
-}
-
-export interface Appointment {
-  id: string
-  user_id: string
-  doctor_name: string
-  specialty: string
-  appointment_date: string
-  clinic_name: string
-  status: string
-  notes?: string
-  created_at: string
-  updated_at: string
-}
-
-export interface HealthMetric {
-  id: string
-  user_id: string
-  metric_type: string
-  value: number
-  unit: string
-  recorded_date: string
-  notes: string
-  created_at: string
-  updated_at: string
+export const createHealthMetric = async (metricData: Omit<HealthMetric, 'id' | 'created_at'>) => {
+  if (!supabase) throw new Error('Supabase não configurado')
+  const { data, error } = await supabase
+    .from('health_metrics')
+    .insert(metricData)
+    .select()
+    .single()
+  if (error) throw error
+  return data
 }
