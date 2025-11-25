@@ -1,41 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
-// Verificar variáveis de ambiente
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// Função para criar cliente admin com service role
+const createAdminClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+
+  if (!supabaseUrl || !supabaseServiceKey) {
+    throw new Error('Variáveis de ambiente do Supabase não configuradas')
+  }
+
+  return createSupabaseClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  })
+}
 
 export async function POST(request: NextRequest) {
   try {
-    // Verificar se as variáveis de ambiente estão configuradas
-    if (!supabaseUrl || !supabaseAnonKey) {
-      console.error('Variáveis de ambiente do Supabase não configuradas')
-      return NextResponse.json(
-        { error: 'Configuração do servidor incompleta. Verifique as variáveis de ambiente.' },
-        { status: 500 }
-      )
-    }
-
-    // Criar cliente Supabase
-    const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-    const { email, password, firstName, lastName, phone } = await request.json()
+    const body = await request.json()
+    const { firstName, lastName, email, phone, password } = body
 
     // Validação básica
-    if (!email || !password || !firstName || !lastName) {
+    if (!firstName || !lastName || !email || !password) {
       return NextResponse.json(
         { error: 'Todos os campos obrigatórios devem ser preenchidos' },
         { status: 400 }
       )
     }
 
-    // Validação de senha
     if (password.length < 6) {
       return NextResponse.json(
-        { error: 'A senha deve ter pelo menos 6 caracteres' },
+        { error: 'Senha deve ter pelo menos 6 caracteres' },
         { status: 400 }
       )
     }
+
+    // Verificar se Supabase está configurado
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return NextResponse.json(
+        { error: 'Supabase não está configurado. Configure as variáveis de ambiente.' },
+        { status: 500 }
+      )
+    }
+
+    const supabase = createSupabaseClient(supabaseUrl, supabaseAnonKey)
 
     // Criar usuário no Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -43,68 +57,80 @@ export async function POST(request: NextRequest) {
       password,
       options: {
         data: {
-          full_name: `${firstName} ${lastName}`,
-          phone: phone || null
+          first_name: firstName,
+          last_name: lastName,
+          phone: phone || null,
+          full_name: `${firstName} ${lastName}`
         }
       }
     })
 
     if (authError) {
-      console.error('Erro ao criar usuário:', authError)
-      
-      if (authError.message.includes('already registered')) {
-        return NextResponse.json(
-          { error: 'Este e-mail já está cadastrado' },
-          { status: 409 }
-        )
-      }
-      
+      console.error('Erro ao criar usuário no Supabase:', authError)
       return NextResponse.json(
-        { error: 'Erro ao criar conta. Tente novamente.' },
+        { error: authError.message || 'Erro ao criar conta' },
         { status: 400 }
       )
     }
 
+    // Verificar se o usuário foi criado
     if (!authData.user) {
       return NextResponse.json(
         { error: 'Erro ao criar usuário' },
-        { status: 400 }
+        { status: 500 }
       )
     }
 
-    // Inserir dados adicionais na tabela users (se existir)
+    // Confirmar automaticamente o usuário usando service role
     try {
-      const { error: insertError } = await supabase
-        .from('users')
+      const adminClient = createAdminClient()
+      const { error: confirmError } = await adminClient.auth.admin.updateUserById(
+        authData.user.id,
+        { email_confirm: true }
+      )
+
+      if (confirmError) {
+        console.warn('Aviso: Não foi possível confirmar automaticamente o email:', confirmError.message)
+        // Não retornar erro, pois o usuário foi criado
+      }
+    } catch (confirmErr) {
+      console.warn('Erro ao confirmar usuário:', confirmErr)
+    }
+
+    // Tentar inserir dados adicionais na tabela de perfis (se existir)
+    try {
+      const { error: profileError } = await supabase
+        .from('profiles')
         .insert({
           id: authData.user.id,
-          email: authData.user.email,
-          full_name: `${firstName} ${lastName}`,
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
           phone: phone || null,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          created_at: new Date().toISOString()
         })
 
-      if (insertError) {
-        console.warn('Erro ao inserir dados adicionais do usuário:', insertError)
-        // Não retorna erro pois o usuário foi criado com sucesso no Auth
+      if (profileError) {
+        console.warn('Aviso: Não foi possível criar perfil:', profileError.message)
+        // Não retornar erro aqui, pois o usuário foi criado com sucesso
       }
-    } catch (insertError) {
-      console.warn('Tabela users pode não existir ainda:', insertError)
+    } catch (profileErr) {
+      console.warn('Tabela profiles pode não existir:', profileErr)
     }
 
     return NextResponse.json({
-      message: 'Conta criada com sucesso! Verifique seu e-mail para confirmar.',
+      success: true,
+      message: 'Conta criada com sucesso! Você pode fazer login agora.',
       user: {
         id: authData.user.id,
         email: authData.user.email,
-        full_name: `${firstName} ${lastName}`,
-        phone: phone || null
+        firstName,
+        lastName
       }
     })
 
   } catch (error) {
-    console.error('Erro ao criar conta:', error)
+    console.error('Erro no cadastro:', error)
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }
