@@ -97,7 +97,13 @@ export function SignupForm({ onSuccess }: SignupFormProps) {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Erro ao criar conta')
+        // Tratamento específico para usuário já registrado
+        if (data.error === 'User already registered') {
+          toast.error('Este e-mail já está cadastrado. Tente fazer login.')
+        } else {
+          toast.error(data.error || 'Erro ao criar conta')
+        }
+        return
       }
 
       toast.success('Conta criada com sucesso! Verifique seu e-mail para confirmar.')
@@ -121,8 +127,7 @@ export function SignupForm({ onSuccess }: SignupFormProps) {
       }
 
     } catch (error) {
-      console.error('Erro no cadastro:', error)
-      toast.error(error instanceof Error ? error.message : 'Erro ao criar conta')
+      toast.error('Erro ao criar conta. Tente novamente.')
     } finally {
       setIsLoading(false)
     }
