@@ -30,9 +30,7 @@ export default function Analise() {
     const file = event.target.files?.[0]
     if (file) {
       setSelectedFile(file)
-      setRecordedVideo(null) // Limpar vídeo gravado se arquivo foi selecionado
-      
-      // Extrair frame do vídeo para análise
+      setRecordedVideo(null)
       extractVideoFrame(file)
     }
   }
@@ -45,8 +43,6 @@ export default function Analise() {
     video.onloadedmetadata = () => {
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
-      
-      // Capturar frame no meio do vídeo
       video.currentTime = video.duration / 2
     }
     
@@ -63,10 +59,9 @@ export default function Analise() {
 
   const handleVideoRecorded = (videoBlob: Blob) => {
     setRecordedVideo(videoBlob)
-    setSelectedFile(null) // Limpar arquivo selecionado se vídeo foi gravado
+    setSelectedFile(null)
     setShowRecorder(false)
     
-    // Extrair frame do vídeo gravado
     const videoFile = new File([videoBlob], `recorded-video-${Date.now()}.webm`, {
       type: videoBlob.type
     })
@@ -81,7 +76,6 @@ export default function Analise() {
     setAnalysisProgress(0)
 
     try {
-      // Simular progresso
       const progressInterval = setInterval(() => {
         setAnalysisProgress(prev => {
           if (prev >= 90) {
@@ -92,13 +86,11 @@ export default function Analise() {
         })
       }, 300)
 
-      // Preparar FormData
       const formData = new FormData()
       
       if (selectedFile) {
         formData.append('video', selectedFile)
       } else if (recordedVideo) {
-        // Converter Blob para File
         const videoFile = new File([recordedVideo], `recorded-video-${Date.now()}.webm`, {
           type: recordedVideo.type
         })
@@ -109,7 +101,6 @@ export default function Analise() {
         formData.append('exerciseType', exerciseType)
       }
 
-      // Chamar API de análise
       const response = await fetch('/api/analyze-video', {
         method: 'POST',
         body: formData
@@ -148,81 +139,69 @@ export default function Analise() {
     setVideoFrame(undefined)
   }
 
-  const getScoreColor = (score: number) => {
-    if (score >= 85) return 'text-green-600'
-    if (score >= 70) return 'text-blue-600'
-    if (score >= 50) return 'text-yellow-600'
-    return 'text-red-600'
-  }
-
-  const getScoreLabel = (score: number) => {
-    if (score >= 85) return 'Excelente'
-    if (score >= 70) return 'Bom'
-    if (score >= 50) return 'Regular'
-    return 'Precisa Melhorar'
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
       {/* Header */}
-      <header className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <Link href="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">M</span>
-          </div>
-          <span className="text-xl font-bold text-gray-900">MoveID</span>
-        </Link>
-        <nav className="hidden md:flex space-x-6">
-          <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">
-            Dashboard
+      <header className="container mx-auto px-4 py-6">
+        <div className="flex justify-between items-center">
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">M</span>
+            </div>
+            <span className="text-xl font-bold text-gray-900">MoveID</span>
           </Link>
-          <Link href="/historico" className="text-gray-600 hover:text-blue-600 transition-colors">
-            Histórico
-          </Link>
-          <Link href="/planos" className="text-gray-600 hover:text-blue-600 transition-colors">
-            Planos
-          </Link>
-        </nav>
+          <nav className="hidden md:flex space-x-6">
+            <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">
+              Dashboard
+            </Link>
+            <Link href="/historico" className="text-gray-600 hover:text-blue-600 transition-colors">
+              Histórico
+            </Link>
+            <Link href="/planos" className="text-gray-600 hover:text-blue-600 transition-colors">
+              Planos
+            </Link>
+          </nav>
+        </div>
       </header>
 
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-8 md:py-20">
         <div className="max-w-6xl mx-auto">
           {!analysisComplete ? (
             <>
               {/* Header Section */}
-              <div className="text-center mb-12">
+              <div className="text-center mb-8 md:mb-12">
                 <Badge variant="secondary" className="mb-4">
-                  <Brain className="mr-2 h-4 w-4" />
+                  <Brain className="mr-2 h-3 w-3 md:h-4 md:w-4" />
                   Análise Inteligente com IA Avançada
                 </Badge>
-                <h1 className="text-4xl font-bold text-gray-900 mb-6">
+                <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
                   Análise de Movimento Inteligente
                 </h1>
-                <p className="text-xl text-gray-600 mb-8">
+                <p className="text-base md:text-xl text-gray-600 mb-6 md:mb-8">
                   Grave um vídeo, faça upload ou tire uma foto para receber análise detalhada do seu movimento com relatório completo.
                 </p>
               </div>
 
               {/* Analysis Type Tabs */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6 md:mb-8">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="video" className="flex items-center">
-                    <Video className="mr-2 h-4 w-4" />
-                    Análise de Vídeo
+                  <TabsTrigger value="video" className="flex items-center text-sm md:text-base">
+                    <Video className="mr-1 md:mr-2 h-3 w-3 md:h-4 md:w-4" />
+                    <span className="hidden sm:inline">Análise de </span>Vídeo
                   </TabsTrigger>
-                  <TabsTrigger value="image" className="flex items-center">
-                    <ImageIcon className="mr-2 h-4 w-4" />
-                    Análise de Imagem
+                  <TabsTrigger value="image" className="flex items-center text-sm md:text-base">
+                    <ImageIcon className="mr-1 md:mr-2 h-3 w-3 md:h-4 md:w-4" />
+                    <span className="hidden sm:inline">Análise de </span>Imagem
                   </TabsTrigger>
                 </TabsList>
 
                 {/* Video Analysis Tab */}
-                <TabsContent value="video" className="space-y-8">
+                <TabsContent value="video" className="space-y-6 md:space-y-8">
                   {/* Exercise Type Selection */}
                   <Card>
                     <CardHeader>
-                      <CardTitle>Tipo de Exercício (Recomendado)</CardTitle>
-                      <CardDescription>
+                      <CardTitle className="text-base md:text-lg">Tipo de Exercício (Recomendado)</CardTitle>
+                      <CardDescription className="text-sm">
                         Selecione o tipo de exercício para análise mais precisa e recomendações específicas
                       </CardDescription>
                     </CardHeader>
@@ -248,12 +227,12 @@ export default function Analise() {
 
                   {/* Upload/Recording Options */}
                   {!showRecorder ? (
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-2 gap-4 md:gap-8">
                       <Card className="text-center">
                         <CardHeader>
-                          <Upload className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                          <CardTitle>Fazer Upload</CardTitle>
-                          <CardDescription>
+                          <Upload className="h-10 w-10 md:h-12 md:w-12 text-blue-600 mx-auto mb-4" />
+                          <CardTitle className="text-base md:text-lg">Fazer Upload</CardTitle>
+                          <CardDescription className="text-sm">
                             Envie um vídeo existente do seu dispositivo
                           </CardDescription>
                         </CardHeader>
@@ -275,7 +254,7 @@ export default function Analise() {
                           </label>
                           {selectedFile && (
                             <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                              <p className="text-sm text-green-700 font-medium">
+                              <p className="text-sm text-green-700 font-medium truncate">
                                 ✓ {selectedFile.name}
                               </p>
                               <p className="text-xs text-green-600">
@@ -288,9 +267,9 @@ export default function Analise() {
 
                       <Card className="text-center">
                         <CardHeader>
-                          <Camera className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                          <CardTitle>Gravar Vídeo</CardTitle>
-                          <CardDescription>
+                          <Camera className="h-10 w-10 md:h-12 md:w-12 text-green-600 mx-auto mb-4" />
+                          <CardTitle className="text-base md:text-lg">Gravar Vídeo</CardTitle>
+                          <CardDescription className="text-sm">
                             Use a câmera do seu dispositivo para gravar
                           </CardDescription>
                         </CardHeader>
@@ -342,9 +321,9 @@ export default function Analise() {
                       <Button
                         size="lg"
                         onClick={handleVideoAnalysis}
-                        className="bg-blue-600 hover:bg-blue-700"
+                        className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
                       >
-                        <Brain className="mr-2 h-5 w-5" />
+                        <Brain className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                         Iniciar Análise Inteligente
                       </Button>
                     </div>
@@ -353,14 +332,14 @@ export default function Analise() {
                   {/* Analyzing State */}
                   {isAnalyzing && (
                     <Card className="text-center">
-                      <CardContent className="py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                        <h3 className="text-xl font-semibold mb-2">Processando Análise...</h3>
-                        <p className="text-gray-600 mb-4">
+                      <CardContent className="py-8 md:py-12">
+                        <div className="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <h3 className="text-lg md:text-xl font-semibold mb-2">Processando Análise...</h3>
+                        <p className="text-sm md:text-base text-gray-600 mb-4">
                           Nossa IA está analisando seu movimento com tecnologia avançada.
                         </p>
                         <Progress value={analysisProgress} className="max-w-xs mx-auto mb-2" />
-                        <p className="text-sm text-gray-500">
+                        <p className="text-xs md:text-sm text-gray-500">
                           {analysisProgress < 30 && "Extraindo frames e identificando pontos..."}
                           {analysisProgress >= 30 && analysisProgress < 60 && "Calculando ângulos e padrões de movimento..."}
                           {analysisProgress >= 60 && analysisProgress < 90 && "Analisando parâmetros e qualidade..."}
@@ -375,9 +354,8 @@ export default function Analise() {
                 <TabsContent value="image">
                   <ImageAnalyzer 
                     onAnalysisComplete={(result) => {
-                      // Converter resultado de imagem para formato de vídeo para compatibilidade
                       const videoResult: VideoAnalysisResult = {
-                        score: 85, // Score padrão para imagens
+                        score: 85,
                         description: result.description,
                         movement_phases: [],
                         biomechanics: result.biomechanics || {

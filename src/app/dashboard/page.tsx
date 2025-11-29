@@ -4,40 +4,43 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { BarChart3, TrendingUp, Calendar, Video, FileText, Settings, LogOut } from 'lucide-react'
+import { BarChart3, TrendingUp, Calendar, Video, FileText, Settings, LogOut, Menu } from 'lucide-react'
 
 export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">M</span>
+              </div>
+              <span className="text-xl font-bold text-gray-900">MoveID</span>
+            </Link>
+            
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <Badge variant="secondary" className="hidden sm:inline-flex">Plano Premium</Badge>
+              <Avatar className="h-8 w-8 md:h-10 md:w-10">
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
+              <Button variant="ghost" size="icon" className="h-8 w-8 md:h-10 md:w-10">
+                <Settings className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 md:h-10 md:w-10">
+                <LogOut className="h-4 w-4" />
+              </Button>
             </div>
-            <span className="text-xl font-bold text-gray-900">MoveID</span>
-          </Link>
-          <div className="flex items-center space-x-4">
-            <Badge variant="secondary">Plano Premium</Badge>
-            <Avatar>
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
-            <Button variant="ghost" size="sm">
-              <Settings className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <LogOut className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
+      <div className="container mx-auto px-4 py-6 md:py-8">
+        <div className="grid lg:grid-cols-4 gap-6 md:gap-8">
+          {/* Sidebar - Hidden on mobile, shown as horizontal menu */}
           <div className="lg:col-span-1">
-            <Card>
+            <Card className="hidden lg:block">
               <CardContent className="p-6">
                 <nav className="space-y-2">
                   <Button variant="ghost" className="w-full justify-start" asChild>
@@ -67,22 +70,50 @@ export default function Dashboard() {
                 </nav>
               </CardContent>
             </Card>
+
+            {/* Mobile Navigation */}
+            <div className="lg:hidden flex gap-2 overflow-x-auto pb-2">
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/dashboard">
+                  <BarChart3 className="mr-1 h-3 w-3" />
+                  Dashboard
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/analise">
+                  <Video className="mr-1 h-3 w-3" />
+                  Análise
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/historico">
+                  <Calendar className="mr-1 h-3 w-3" />
+                  Histórico
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/relatorios">
+                  <FileText className="mr-1 h-3 w-3" />
+                  Relatórios
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-6 md:space-y-8">
             {/* Welcome Section */}
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 Bem-vindo de volta, João!
               </h1>
-              <p className="text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 Aqui está um resumo das suas análises recentes.
               </p>
             </div>
 
             {/* Stats Cards */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Análises Este Mês</CardTitle>
@@ -109,7 +140,7 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="sm:col-span-2 md:col-span-1">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Relatórios Gerados</CardTitle>
                   <FileText className="h-4 w-4 text-muted-foreground" />
@@ -126,8 +157,8 @@ export default function Dashboard() {
             {/* Progress Overview */}
             <Card>
               <CardHeader>
-                <CardTitle>Evolução dos Movimentos</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg md:text-xl">Evolução dos Movimentos</CardTitle>
+                <CardDescription className="text-sm">
                   Seu progresso nos últimos 30 dias
                 </CardDescription>
               </CardHeader>
@@ -159,58 +190,58 @@ export default function Dashboard() {
             {/* Recent Analyses */}
             <Card>
               <CardHeader>
-                <CardTitle>Análises Recentes</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg md:text-xl">Análises Recentes</CardTitle>
+                <CardDescription className="text-sm">
                   Suas últimas avaliações de movimento
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <Video className="h-6 w-6 text-blue-600" />
+                  <div className="flex items-center justify-between p-3 md:p-4 border rounded-lg">
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Video className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">Agachamento Profundo</h3>
-                        <p className="text-sm text-gray-600">Ontem às 14:30</p>
+                        <h3 className="text-sm md:text-base font-semibold">Agachamento Profundo</h3>
+                        <p className="text-xs md:text-sm text-gray-600">Ontem às 14:30</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge variant="secondary">Nota: 82</Badge>
-                      <p className="text-sm text-gray-600 mt-1">Bom</p>
+                      <Badge variant="secondary" className="text-xs">Nota: 82</Badge>
+                      <p className="text-xs md:text-sm text-gray-600 mt-1">Bom</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <Video className="h-6 w-6 text-green-600" />
+                  <div className="flex items-center justify-between p-3 md:p-4 border rounded-lg">
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Video className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">Flexão com Barra</h3>
-                        <p className="text-sm text-gray-600">2 dias atrás</p>
+                        <h3 className="text-sm md:text-base font-semibold">Flexão com Barra</h3>
+                        <p className="text-xs md:text-sm text-gray-600">2 dias atrás</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge variant="secondary">Nota: 75</Badge>
-                      <p className="text-sm text-gray-600 mt-1">Regular</p>
+                      <Badge variant="secondary" className="text-xs">Nota: 75</Badge>
+                      <p className="text-xs md:text-sm text-gray-600 mt-1">Regular</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Video className="h-6 w-6 text-purple-600" />
+                  <div className="flex items-center justify-between p-3 md:p-4 border rounded-lg">
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Video className="h-5 w-5 md:h-6 md:w-6 text-purple-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">Corrida em Esteira</h3>
-                        <p className="text-sm text-gray-600">3 dias atrás</p>
+                        <h3 className="text-sm md:text-base font-semibold">Corrida em Esteira</h3>
+                        <p className="text-xs md:text-sm text-gray-600">3 dias atrás</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge variant="secondary">Nota: 88</Badge>
-                      <p className="text-sm text-gray-600 mt-1">Excelente</p>
+                      <Badge variant="secondary" className="text-xs">Nota: 88</Badge>
+                      <p className="text-xs md:text-sm text-gray-600 mt-1">Excelente</p>
                     </div>
                   </div>
                 </div>
@@ -223,11 +254,11 @@ export default function Dashboard() {
             </Card>
 
             {/* Quick Actions */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Nova Análise</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-base md:text-lg">Nova Análise</CardTitle>
+                  <CardDescription className="text-sm">
                     Grave ou envie um vídeo para análise imediata
                   </CardDescription>
                 </CardHeader>
@@ -243,8 +274,8 @@ export default function Dashboard() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Gerar Relatório</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-base md:text-lg">Gerar Relatório</CardTitle>
+                  <CardDescription className="text-sm">
                     Baixe um PDF completo com suas métricas
                   </CardDescription>
                 </CardHeader>

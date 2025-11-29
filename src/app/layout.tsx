@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 // Import all available fonts for AI usage
 import "../lib/fonts";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "MoveID - IA que entende seu movimento",
@@ -22,6 +23,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased" style={{ fontFamily: '"Geist Sans", ui-sans-serif, system-ui, sans-serif' }}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

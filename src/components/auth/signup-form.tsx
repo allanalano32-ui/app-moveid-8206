@@ -98,15 +98,18 @@ export function SignupForm({ onSuccess }: SignupFormProps) {
 
       if (!response.ok) {
         // Tratamento específico para usuário já registrado
-        if (data.error === 'User already registered') {
+        if (data.error && data.error.includes('já está cadastrado')) {
           toast.error('Este e-mail já está cadastrado. Tente fazer login.')
+          setTimeout(() => {
+            router.push('/login')
+          }, 2000)
         } else {
           toast.error(data.error || 'Erro ao criar conta')
         }
         return
       }
 
-      toast.success('Conta criada com sucesso! Verifique seu e-mail para confirmar.')
+      toast.success('Conta criada com sucesso! Você já pode fazer login.')
       
       // Limpar formulário
       setFormData({
@@ -119,12 +122,14 @@ export function SignupForm({ onSuccess }: SignupFormProps) {
       })
       setAcceptedTerms(false)
 
-      // Callback de sucesso ou redirecionamento
-      if (onSuccess) {
-        onSuccess()
-      } else {
-        router.push('/login?message=Conta criada com sucesso! Faça login.')
-      }
+      // Redirecionar para login após 1.5 segundos
+      setTimeout(() => {
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.push('/login')
+        }
+      }, 1500)
 
     } catch (error) {
       toast.error('Erro ao criar conta. Tente novamente.')
